@@ -1,38 +1,28 @@
-name: CI-NodeJsNeedsMatrix
+name: Self-Hosted Runner Workflow
 on:
     push:
 jobs:
     job1:
-        continue-on-error: true
-        needs: job2
-        strategy:
-            matrix:
-                node-version: [18]
-                operating-system: [ubuntu-latest]
-        runs-on: ${{ matrix.operating-system }}
+        runs-on: ubuntu-latest
         steps:
-            - name: Checkout Code
+            - name: checkout code
               uses: actions/checkout@v6
-            - name: Set up Node.js ${{ matrix.node-version }}
+            - name: set up node
               uses: actions/setup-node@v3
               with:
-                node-version: ${{ matrix.node-version }}
+                node-version: 18
                 cache: 'npm'
-            - name: Install dependencies
+            - name: install dependencies
               run: npm ci
     job2:
-        strategy:
-            matrix:
-                node-version: [20]
-                operating-system: [windows-latest]
-        runs-on: ${{ matrix.operating-system }}
+        runs-on: self-hosted
         steps:
-            - name: Checkout Code
+            - name: checkout code
               uses: actions/checkout@v6
-            - name: Set up Node.js ${{ matrix.node-version }}
+            - name: set up node
               uses: actions/setup-node@v3
               with:
-                node-version: ${{ matrix.node-version }}
+                node-version: 18
                 cache: 'npm'
-            - name: Install dependencies
+            - name: install dependencies
               run: npm ci
